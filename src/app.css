@@ -87,13 +87,13 @@ body { font-family: var(--font-sans); -webkit-font-smoothing: antialiased; }
 .dial--mobile .dial-copy-stack { left: 32px; right: 32px; top: 338px; height: 0; }
 .dial-copy { position: absolute; left: 0; right: 0; display: flex; flex-direction: column; gap: 4px; opacity: 0; filter: blur(3px);
   --dx: 0px; --dy: 0px; transform: translate(var(--dx), var(--dy));
-  transition: opacity 560ms cubic-bezier(.4, 0, .6, 1), transform 760ms cubic-bezier(.4, 0, .2, 1), filter 560ms cubic-bezier(.4, 0, .6, 1); }
+  transition: opacity 640ms cubic-bezier(.4, 0, .6, 1) 160ms, transform 900ms cubic-bezier(.25, .6, .35, 1), filter 640ms cubic-bezier(.4, 0, .6, 1) 160ms; }
 .dial--desktop .dial-copy { top: 0; margin-top: -26px; max-width: 280px; }
 .dial--mobile .dial-copy { top: 0; text-align: center; align-items: center; }
-.dial--desktop .dial-copy.is-before { --dy: -36px; }
-.dial--desktop .dial-copy.is-after { --dy: 36px; }
-.dial--mobile .dial-copy.is-before { --dx: -36px; }
-.dial--mobile .dial-copy.is-after { --dx: 36px; }
+.dial--desktop .dial-copy.is-before { --dy: -60px; }
+.dial--desktop .dial-copy.is-after { --dy: 60px; }
+.dial--mobile .dial-copy.is-before { --dx: -60px; }
+.dial--mobile .dial-copy.is-after { --dx: 60px; }
 .dial-copy.is-active { opacity: 1; filter: none; transition: opacity 900ms cubic-bezier(.33, 0, .2, 1) 260ms, transform 900ms cubic-bezier(.22, 1, .36, 1) 200ms, filter 900ms cubic-bezier(.33, 0, .2, 1) 260ms; }
 .dial-copy strong { font-size: 18px; font-weight: 600; letter-spacing: .01em; color: var(--color-fg-default); }
 .dial-copy span { font-size: 18px; line-height: 1.4; font-weight: 300; color: var(--color-fg-muted); letter-spacing: .01em; }
