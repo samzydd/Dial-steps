@@ -2,6 +2,8 @@
 
 A rotary step component with **arc** and **straight** variants, each in **desktop** and **mobile** layouts. Built with [`@sakaniui/react`](https://www.npmjs.com/package/@sakaniui/react) components and tokens.
 
+**[Live demo](https://claude.ai/artifact/DrXrxhN6S6Ya1bmxTqyfif)**: arc and straight, desktop and mobile, light and dark.
+
 ## Run
 
 ```bash
