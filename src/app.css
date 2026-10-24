@@ -83,6 +83,11 @@ body { font-family: var(--font-sans); -webkit-font-smoothing: antialiased; }
 
 /* each description rides with its number and tilts with it: carried in as the number arrives, carried out (dissolving) as it leaves */
 .dial-copy-wrap { position: absolute; left: 0; top: 0; width: 0; height: 0; pointer-events: none; }
+/* the description scales by the same ratio as its number (same anchor, same timing), so the pair shrinks and grows as one */
+.dial-copy-wrap { transition: transform 520ms var(--ease); }
+.dial--desktop .dial-copy-wrap { transform-origin: 40px 0; transform: scale(.56); }
+.dial--mobile .dial-copy-wrap { transform-origin: 0 -36px; transform: scale(.5); }
+.dial--desktop .is-active .dial-copy-wrap, .dial--mobile .is-active .dial-copy-wrap { transform: scale(1); }
 .dial--desktop .dial-copy-wrap > .dial-copy { left: 212px; top: -26px; width: 280px; }
 .dial--mobile .dial-copy-wrap > .dial-copy { left: -163px; top: 38px; width: 326px; text-align: center; align-items: center; }
 .dial-copy { position: absolute; display: flex; flex-direction: column; gap: 4px; opacity: 0; filter: blur(14px);
