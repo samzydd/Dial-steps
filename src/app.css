@@ -92,8 +92,8 @@ body { font-family: var(--font-sans); -webkit-font-smoothing: antialiased; }
   -webkit-mask-image: var(--cloud); mask-image: var(--cloud);
   -webkit-mask-size: 100% 400%; mask-size: 100% 400%; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
   -webkit-mask-position: 0 50%; mask-position: 0 50%;
-  transition: opacity 820ms cubic-bezier(.2, .55, .35, 1), transform 1000ms cubic-bezier(.25, .6, .35, 1), filter 900ms cubic-bezier(.3, .3, .4, 1),
-    mask-position 1000ms cubic-bezier(.3, .4, .4, 1), -webkit-mask-position 1000ms cubic-bezier(.3, .4, .4, 1); }
+  transition: opacity 1100ms cubic-bezier(.2, .55, .35, 1), transform 1300ms cubic-bezier(.25, .6, .35, 1), filter 1200ms cubic-bezier(.3, .3, .4, 1),
+    mask-position 1300ms cubic-bezier(.3, .4, .4, 1), -webkit-mask-position 1300ms cubic-bezier(.3, .4, .4, 1); }
 .dial--desktop .dial-copy { top: 0; margin-top: -26px; max-width: 280px; }
 .dial--mobile .dial-copy { top: 0; text-align: center; align-items: center;
   --cloud: linear-gradient(to right, transparent 0%, rgba(0,0,0,.04) 8%, rgba(0,0,0,.16) 16%, rgba(0,0,0,.38) 24%, rgba(0,0,0,.68) 31%, rgba(0,0,0,.92) 36%, #000 37.5%, #000 62.5%, rgba(0,0,0,.92) 64%, rgba(0,0,0,.68) 69%, rgba(0,0,0,.38) 76%, rgba(0,0,0,.16) 84%, rgba(0,0,0,.04) 92%, transparent 100%);
