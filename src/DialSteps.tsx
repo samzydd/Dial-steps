@@ -214,12 +214,8 @@ export function DialSteps({ steps, value, defaultValue = 0, onChange, layout = '
                 >
                   {pad(i + 1)}
                 </button>
-                {/* the description rides with its number: carried round by the wheel, held upright by a matching counter-rotation */}
-                <div
-                  className={`dial-copy-wrap ${dragDeg ? 'is-live' : ''}`}
-                  style={{ transform: straight ? undefined : `rotate(${-(wheelDeg + i * gap)}deg)` }}
-                  aria-hidden="true"
-                >
+                {/* the description rides with its number and tilts the same way: it turns with the wheel, level only when active */}
+                <div className="dial-copy-wrap" aria-hidden="true">
                   <div className={`dial-copy ${off === 0 ? 'is-active' : off < 0 ? 'is-before' : 'is-after'}`}>
                     <strong>{s.title}</strong>
                     <span>{s.description}</span>

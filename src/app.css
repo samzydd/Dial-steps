@@ -81,9 +81,8 @@ body { font-family: var(--font-sans); -webkit-font-smoothing: antialiased; }
 .dial-num:focus-visible { outline: 2px solid var(--color-border-focus); outline-offset: 4px; border-radius: 6px; }
 .dial-item:not(.is-active) .dial-num:hover { opacity: .5; }
 
-/* each description rides with its number: it is carried in as the number arrives and carried out, dissolving, as the number leaves */
-.dial-copy-wrap { position: absolute; left: 0; top: 0; width: 0; height: 0; pointer-events: none; transition: transform 720ms cubic-bezier(.3, 1.3, .5, 1); }
-.dial-copy-wrap.is-live { transition: none; }
+/* each description rides with its number and tilts with it: carried in as the number arrives, carried out (dissolving) as it leaves */
+.dial-copy-wrap { position: absolute; left: 0; top: 0; width: 0; height: 0; pointer-events: none; }
 .dial--desktop .dial-copy-wrap > .dial-copy { left: 212px; top: -26px; width: 280px; }
 .dial--mobile .dial-copy-wrap > .dial-copy { left: -163px; top: 38px; width: 326px; text-align: center; align-items: center; }
 .dial-copy { position: absolute; display: flex; flex-direction: column; gap: 4px; opacity: 0; filter: blur(14px);
