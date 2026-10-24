@@ -1,0 +1,112 @@
+html, body, #root { min-height: 100%; margin: 0; }
+body { font-family: var(--font-sans); -webkit-font-smoothing: antialiased; }
+.stage { min-height: 100vh; box-sizing: border-box; padding: 32px 24px 48px; background: var(--color-bg-subtle); color: var(--color-fg-default); transition: background-color 240ms ease; }
+.bar { max-width: 1210px; margin: 0 auto 24px; display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.bar h1 { margin: 0; font-size: 20px; font-weight: 600; letter-spacing: -.01em; }
+.bar p { margin: 4px 0 0; font-size: 14px; color: var(--color-fg-muted); }
+.row { display: flex; gap: 24px; justify-content: center; flex-wrap: wrap; margin-bottom: 24px; }
+.frame { position: relative; height: 640px; border-radius: 24px; background: var(--color-bg-canvas); border: 1px solid var(--color-border-subtle); overflow: hidden; overflow: clip; }
+.frame--desktop { width: 760px; max-width: 100%; }
+.frame--mobile { width: 390px; max-width: 100%; border-radius: 36px; }
+.tag { position: absolute; z-index: 2; top: 16px; right: 18px; font: 500 11px/1 var(--font-mono); color: var(--color-fg-subtle); letter-spacing: .04em; }
+
+/* ---------------- Dial Steps ---------------- */
+.dial { position: absolute; inset: 0; outline: none; touch-action: none; user-select: none; cursor: grab; --ease: cubic-bezier(.22, 1, .36, 1); }
+.dial.is-dragging { cursor: grabbing; }
+.dial:focus-visible { box-shadow: inset 0 0 0 2px var(--color-border-focus); border-radius: inherit; }
+
+/* the center of the circle sits off-canvas; the reading line runs through it */
+.dial-center { position: absolute; width: 0; height: 0; }
+.dial--desktop .dial-center { left: calc(220px - var(--R)); top: 50%; }
+.dial--mobile .dial-center { left: 50%; top: calc(300px + var(--R)); }
+.dial--straight.dial--desktop .dial-center { left: 220px; top: 50%; }
+.dial--straight.dial--mobile .dial-center { left: 50%; top: 300px; }
+
+.dial-grid { position: absolute; left: calc(-1 * var(--RM)); top: calc(-1 * var(--RM)); pointer-events: none; overflow: visible; }
+.dial-grid-ring { fill: none; stroke: var(--color-border-subtle); stroke-width: 1; opacity: 1; }
+.dial-spoke { stroke: var(--color-border-default); stroke-width: 1; opacity: .75; }
+.dial-grid-spokes { transition: transform 720ms cubic-bezier(.3, 1.3, .5, 1); transform-origin: 0 0; }
+.dial-grid-spokes.is-live { transition: none; }
+
+.dial--desktop { --fx: 220px; --fy: 50%; }
+.dial--mobile { --fx: 50%; --fy: 300px; }
+.dial-ring { position: absolute; left: calc(-1 * var(--R)); top: calc(-1 * var(--R)); pointer-events: none; }
+.dial-ring circle { stroke: var(--color-border-default); stroke-width: 1; }
+
+.dial-wheel { position: absolute; left: 0; top: 0; transition: transform 720ms cubic-bezier(.3, 1.3, .5, 1); }
+.dial-wheel.is-live { transition: none; }
+
+.dial-item { position: absolute; left: 0; top: 0; width: 0; height: 0; }
+.dial-dot { position: absolute; left: -3px; top: -3px; width: 6px; height: 6px; border-radius: 50%; background: var(--color-border-strong); transition: background-color 300ms ease, transform 300ms ease; }
+.is-active .dial-dot { transform: scale(1.2); }
+
+/* straight shape: the guide line through the focus dot */
+.dial-grid--straight { left: -720px; top: -720px; }
+.dial-line { position: absolute; background: var(--color-border-default); pointer-events: none; }
+.dial--straight.dial--desktop .dial-line { left: -0.5px; top: -720px; width: 1px; height: 1440px; }
+.dial--straight.dial--mobile .dial-line { top: -0.5px; left: -720px; height: 1px; width: 1440px; }
+.dial--straight .dial-wheel { transition-property: transform; }
+
+
+/* fixed black dot on the reading line */
+.dial-main { position: absolute; z-index: 2; width: 0; height: 0; pointer-events: none; }
+.dial--desktop .dial-main { left: var(--R); top: 0; }
+.dial--mobile .dial-main { left: 0; top: calc(-1 * var(--R)); }
+.dial--straight.dial--desktop .dial-main, .dial--straight.dial--mobile .dial-main { left: 0; top: 0; }
+.dial-main-dot { position: absolute; left: 0; top: 0; width: 0; height: 0; color: var(--color-fg-default); }
+.dial-main-dot .core { position: absolute; left: -4.5px; top: -4.5px; width: 9px; height: 9px; border-radius: 50%; background: currentColor;
+  animation: land 1000ms ease-out; }
+@keyframes land {
+  0% { transform: scale(1); }
+  10% { transform: scale(.82); }   /* exit: the dot gives way as the old one leaves */
+  22% { transform: scale(1.05); }
+  32% { transform: scale(1); }
+  42% { transform: scale(1.22); }  /* arrival: the next dot lands on it and settles with a small bounce */
+  56% { transform: scale(.93); }
+  70% { transform: scale(1.05); }
+  84% { transform: scale(.99); }
+  100% { transform: scale(1); }
+}
+
+
+/* number sits just outside the ring along the reading direction */
+.dial-num { all: unset; position: absolute; cursor: pointer; white-space: nowrap;
+  font-family: var(--font-mono); font-feature-settings: "zero" 1; font-variant-numeric: slashed-zero tabular-nums; font-weight: 700; letter-spacing: -.04em; line-height: 1;
+  color: var(--color-fg-default); opacity: calc(1 - min(var(--dist), 1) * .82 - max(var(--dist) - 2, 0) * .1);
+  transition: font-size 520ms var(--ease), opacity 400ms ease, color 300ms ease, transform 520ms var(--ease); }
+.dial--desktop .dial-num { left: 40px; top: 0; transform: translateY(-50%) scale(.56); transform-origin: left center; font-size: 104px; }
+.dial--desktop .is-active .dial-num { transform: translateY(-50%) scale(1); }
+.dial--mobile .dial-num { left: 0; top: -36px; transform: translate(-50%, -100%) scale(.5); transform-origin: center bottom; font-size: 96px; }
+.dial--mobile .is-active .dial-num { transform: translate(-50%, -100%) scale(1); }
+.dial-num:focus-visible { outline: 2px solid var(--color-border-focus); outline-offset: 4px; border-radius: 6px; }
+.dial-item:not(.is-active) .dial-num:hover { opacity: .5; }
+
+/* copy stays upright and fixed; it fades in/out while drifting the way the numbers travel */
+.dial-copy-stack { position: absolute; pointer-events: none; }
+.dial--desktop .dial-copy-stack { left: 432px; right: 40px; top: 50%; height: 0; }
+.dial--mobile .dial-copy-stack { left: 32px; right: 32px; top: 338px; height: 0; }
+.dial-copy { position: absolute; left: 0; right: 0; display: flex; flex-direction: column; gap: 4px; opacity: 0; filter: blur(3px);
+  --dx: 0px; --dy: 0px; transform: translate(var(--dx), var(--dy));
+  transition: opacity 560ms cubic-bezier(.4, 0, .6, 1), transform 760ms cubic-bezier(.4, 0, .2, 1), filter 560ms cubic-bezier(.4, 0, .6, 1); }
+.dial--desktop .dial-copy { top: 0; margin-top: -26px; max-width: 280px; }
+.dial--mobile .dial-copy { top: 0; text-align: center; align-items: center; }
+.dial--desktop .dial-copy.is-before { --dy: -36px; }
+.dial--desktop .dial-copy.is-after { --dy: 36px; }
+.dial--mobile .dial-copy.is-before { --dx: -36px; }
+.dial--mobile .dial-copy.is-after { --dx: 36px; }
+.dial-copy.is-active { opacity: 1; filter: none; transition: opacity 900ms cubic-bezier(.33, 0, .2, 1) 260ms, transform 900ms cubic-bezier(.22, 1, .36, 1) 200ms, filter 900ms cubic-bezier(.33, 0, .2, 1) 260ms; }
+.dial-copy strong { font-size: 18px; font-weight: 600; letter-spacing: .01em; color: var(--color-fg-default); }
+.dial-copy span { font-size: 18px; line-height: 1.4; font-weight: 300; color: var(--color-fg-muted); letter-spacing: .01em; }
+.dial--mobile .dial-copy span { max-width: 200px; text-wrap: balance; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* navigation: previous / counter / next */
+.dial-nav { position: absolute; z-index: 3; display: flex; align-items: center; gap: 10px; cursor: default; }
+.dial--desktop .dial-nav { right: 24px; bottom: 24px; flex-direction: column; }
+.dial--mobile .dial-nav { left: 50%; transform: translateX(-50%); bottom: 28px; }
+.dial-count { font: 500 12px/1 var(--font-mono); color: var(--color-fg-subtle); letter-spacing: .04em; min-width: 48px; text-align: center; }
+.dial-count b { color: var(--color-fg-default); font-weight: 600; }
+.dial-nav button { background: var(--color-bg-surface); }
+
+@media (prefers-reduced-motion: reduce) { .dial * { transition-duration: 1ms !important; } }
+@media (prefers-reduced-motion: reduce) { .core { animation: none; } }
