@@ -214,20 +214,23 @@ export function DialSteps({ steps, value, defaultValue = 0, onChange, layout = '
                 >
                   {pad(i + 1)}
                 </button>
+                {/* the description rides with its number: carried round by the wheel, held upright by a matching counter-rotation */}
+                <div
+                  className={`dial-copy-wrap ${dragDeg ? 'is-live' : ''}`}
+                  style={{ transform: straight ? undefined : `rotate(${-(wheelDeg + i * gap)}deg)` }}
+                  aria-hidden="true"
+                >
+                  <div className={`dial-copy ${off === 0 ? 'is-active' : off < 0 ? 'is-before' : 'is-after'}`}>
+                    <strong>{s.title}</strong>
+                    <span>{s.description}</span>
+                  </div>
+                </div>
               </div>
             );
           })}
         </div>
       </div>
 
-      <div className="dial-copy-stack" aria-hidden="true">
-        {steps.map((s, i) => (
-          <div key={s.title} className={`dial-copy ${i === active ? 'is-active' : i < active ? 'is-before' : 'is-after'}`}>
-            <strong>{s.title}</strong>
-            <span>{s.description}</span>
-          </div>
-        ))}
-      </div>
       <div className="sr-only" aria-live="polite">{cur.title}: {cur.description}</div>
 
       {controls && (

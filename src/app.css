@@ -81,30 +81,28 @@ body { font-family: var(--font-sans); -webkit-font-smoothing: antialiased; }
 .dial-num:focus-visible { outline: 2px solid var(--color-border-focus); outline-offset: 4px; border-radius: 6px; }
 .dial-item:not(.is-active) .dial-num:hover { opacity: .5; }
 
-/* copy stays upright and fixed; it fades in/out while drifting the way the numbers travel */
-.dial-copy-stack { position: absolute; pointer-events: none; }
-.dial--desktop .dial-copy-stack { left: 432px; right: 40px; top: 50%; height: 0; }
-.dial--mobile .dial-copy-stack { left: 32px; right: 32px; top: 338px; height: 0; }
-/* description copy: drifts along the direction of travel and dissolves into a soft cloud (mask sweep + blur) */
-.dial-copy { position: absolute; left: 0; right: 0; display: flex; flex-direction: column; gap: 4px; opacity: 0; filter: blur(14px);
-  --dx: 0px; --dy: 0px; --cloud: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,.04) 8%, rgba(0,0,0,.16) 16%, rgba(0,0,0,.38) 24%, rgba(0,0,0,.68) 31%, rgba(0,0,0,.92) 36%, #000 37.5%, #000 62.5%, rgba(0,0,0,.92) 64%, rgba(0,0,0,.68) 69%, rgba(0,0,0,.38) 76%, rgba(0,0,0,.16) 84%, rgba(0,0,0,.04) 92%, transparent 100%);
-  transform: translate(var(--dx), var(--dy));
+/* each description rides with its number: it is carried in as the number arrives and carried out, dissolving, as the number leaves */
+.dial-copy-wrap { position: absolute; left: 0; top: 0; width: 0; height: 0; pointer-events: none; transition: transform 720ms cubic-bezier(.3, 1.3, .5, 1); }
+.dial-copy-wrap.is-live { transition: none; }
+.dial--desktop .dial-copy-wrap > .dial-copy { left: 212px; top: -26px; width: 280px; }
+.dial--mobile .dial-copy-wrap > .dial-copy { left: -163px; top: 38px; width: 326px; text-align: center; align-items: center; }
+.dial-copy { position: absolute; display: flex; flex-direction: column; gap: 4px; opacity: 0; filter: blur(14px);
+  --cloud: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,.04) 8%, rgba(0,0,0,.16) 16%, rgba(0,0,0,.38) 24%, rgba(0,0,0,.68) 31%, rgba(0,0,0,.92) 36%, #000 37.5%, #000 62.5%, rgba(0,0,0,.92) 64%, rgba(0,0,0,.68) 69%, rgba(0,0,0,.38) 76%, rgba(0,0,0,.16) 84%, rgba(0,0,0,.04) 92%, transparent 100%);
   -webkit-mask-image: var(--cloud); mask-image: var(--cloud);
   -webkit-mask-size: 100% 400%; mask-size: 100% 400%; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
   -webkit-mask-position: 0 50%; mask-position: 0 50%;
-  transition: opacity 1100ms cubic-bezier(.2, .55, .35, 1), transform 1300ms cubic-bezier(.25, .6, .35, 1), filter 1200ms cubic-bezier(.3, .3, .4, 1),
-    mask-position 1300ms cubic-bezier(.3, .4, .4, 1), -webkit-mask-position 1300ms cubic-bezier(.3, .4, .4, 1); }
-.dial--desktop .dial-copy { top: 0; margin-top: -26px; max-width: 280px; }
-.dial--mobile .dial-copy { top: 0; text-align: center; align-items: center;
+  transition: opacity 900ms cubic-bezier(.3, .4, .4, 1), filter 1000ms cubic-bezier(.3, .3, .4, 1),
+    mask-position 1100ms cubic-bezier(.3, .4, .4, 1), -webkit-mask-position 1100ms cubic-bezier(.3, .4, .4, 1); }
+.dial--mobile .dial-copy {
   --cloud: linear-gradient(to right, transparent 0%, rgba(0,0,0,.04) 8%, rgba(0,0,0,.16) 16%, rgba(0,0,0,.38) 24%, rgba(0,0,0,.68) 31%, rgba(0,0,0,.92) 36%, #000 37.5%, #000 62.5%, rgba(0,0,0,.92) 64%, rgba(0,0,0,.68) 69%, rgba(0,0,0,.38) 76%, rgba(0,0,0,.16) 84%, rgba(0,0,0,.04) 92%, transparent 100%);
   -webkit-mask-size: 400% 100%; mask-size: 400% 100%; -webkit-mask-position: 50% 0; mask-position: 50% 0; }
-.dial--desktop .dial-copy.is-before { --dy: -92px; -webkit-mask-position: 0 0; mask-position: 0 0; }
-.dial--desktop .dial-copy.is-after { --dy: 92px; -webkit-mask-position: 0 100%; mask-position: 0 100%; }
-.dial--mobile .dial-copy.is-before { --dx: -92px; -webkit-mask-position: 0 0; mask-position: 0 0; }
-.dial--mobile .dial-copy.is-after { --dx: 92px; -webkit-mask-position: 100% 0; mask-position: 100% 0; }
+/* the dissolve starts on the side the number is being carried towards */
+.dial--desktop .dial-copy.is-before { -webkit-mask-position: 0 0; mask-position: 0 0; }
+.dial--desktop .dial-copy.is-after { -webkit-mask-position: 0 100%; mask-position: 0 100%; }
+.dial--mobile .dial-copy.is-before { -webkit-mask-position: 0 0; mask-position: 0 0; }
+.dial--mobile .dial-copy.is-after { -webkit-mask-position: 100% 0; mask-position: 100% 0; }
 .dial-copy.is-active { opacity: 1; filter: none; -webkit-mask-position: 0 50%; mask-position: 0 50%;
-  transition: opacity 400ms ease, transform 520ms var(--ease), filter 520ms var(--ease),
-    mask-position 520ms var(--ease), -webkit-mask-position 520ms var(--ease); }
+  transition: opacity 500ms ease 80ms, filter 520ms var(--ease) 80ms, mask-position 520ms var(--ease) 80ms, -webkit-mask-position 520ms var(--ease) 80ms; }
 .dial--mobile .dial-copy.is-active { -webkit-mask-position: 50% 0; mask-position: 50% 0; }
 .dial-copy strong { font-size: 18px; font-weight: 600; letter-spacing: .01em; color: var(--color-fg-default); }
 .dial-copy span { font-size: 18px; line-height: 1.4; font-weight: 300; color: var(--color-fg-muted); letter-spacing: .01em; }
