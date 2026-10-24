@@ -86,18 +86,18 @@ body { font-family: var(--font-sans); -webkit-font-smoothing: antialiased; }
 .dial--desktop .dial-copy-stack { left: 432px; right: 40px; top: 50%; height: 0; }
 .dial--mobile .dial-copy-stack { left: 32px; right: 32px; top: 338px; height: 0; }
 /* description copy: drifts along the direction of travel and dissolves into a soft cloud (mask sweep + blur) */
-.dial-copy { position: absolute; left: 0; right: 0; display: flex; flex-direction: column; gap: 4px; opacity: 0; filter: blur(8px);
-  --dx: 0px; --dy: 0px; --cloud: linear-gradient(to bottom, transparent 0%, transparent 10%, #000 32%, #000 68%, transparent 90%, transparent 100%);
+.dial-copy { position: absolute; left: 0; right: 0; display: flex; flex-direction: column; gap: 4px; opacity: 0; filter: blur(14px);
+  --dx: 0px; --dy: 0px; --cloud: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,.04) 8%, rgba(0,0,0,.16) 16%, rgba(0,0,0,.38) 24%, rgba(0,0,0,.68) 31%, rgba(0,0,0,.92) 36%, #000 37.5%, #000 62.5%, rgba(0,0,0,.92) 64%, rgba(0,0,0,.68) 69%, rgba(0,0,0,.38) 76%, rgba(0,0,0,.16) 84%, rgba(0,0,0,.04) 92%, transparent 100%);
   transform: translate(var(--dx), var(--dy));
   -webkit-mask-image: var(--cloud); mask-image: var(--cloud);
-  -webkit-mask-size: 100% 300%; mask-size: 100% 300%; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 400%; mask-size: 100% 400%; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
   -webkit-mask-position: 0 50%; mask-position: 0 50%;
-  transition: opacity 760ms cubic-bezier(.4, 0, .6, 1) 240ms, transform 1000ms cubic-bezier(.25, .6, .35, 1), filter 900ms cubic-bezier(.4, 0, .6, 1) 120ms,
+  transition: opacity 820ms cubic-bezier(.2, .55, .35, 1), transform 1000ms cubic-bezier(.25, .6, .35, 1), filter 900ms cubic-bezier(.3, .3, .4, 1),
     mask-position 1000ms cubic-bezier(.3, .4, .4, 1), -webkit-mask-position 1000ms cubic-bezier(.3, .4, .4, 1); }
 .dial--desktop .dial-copy { top: 0; margin-top: -26px; max-width: 280px; }
 .dial--mobile .dial-copy { top: 0; text-align: center; align-items: center;
-  --cloud: linear-gradient(to right, transparent 0%, transparent 10%, #000 32%, #000 68%, transparent 90%, transparent 100%);
-  -webkit-mask-size: 300% 100%; mask-size: 300% 100%; -webkit-mask-position: 50% 0; mask-position: 50% 0; }
+  --cloud: linear-gradient(to right, transparent 0%, rgba(0,0,0,.04) 8%, rgba(0,0,0,.16) 16%, rgba(0,0,0,.38) 24%, rgba(0,0,0,.68) 31%, rgba(0,0,0,.92) 36%, #000 37.5%, #000 62.5%, rgba(0,0,0,.92) 64%, rgba(0,0,0,.68) 69%, rgba(0,0,0,.38) 76%, rgba(0,0,0,.16) 84%, rgba(0,0,0,.04) 92%, transparent 100%);
+  -webkit-mask-size: 400% 100%; mask-size: 400% 100%; -webkit-mask-position: 50% 0; mask-position: 50% 0; }
 .dial--desktop .dial-copy.is-before { --dy: -92px; -webkit-mask-position: 0 0; mask-position: 0 0; }
 .dial--desktop .dial-copy.is-after { --dy: 92px; -webkit-mask-position: 0 100%; mask-position: 0 100%; }
 .dial--mobile .dial-copy.is-before { --dx: -92px; -webkit-mask-position: 0 0; mask-position: 0 0; }
